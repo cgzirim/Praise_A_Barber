@@ -1,7 +1,7 @@
-from app.v1.views import app_views
-from app.v1.models.ops import Comments
-from app.v1.models.user import User
-from app.v1.models.barber import Barber, BarberRating, Style
+from api.v1.views import app_views
+from models.user import User
+from models.ops import Comments
+from models.barber import Barber, BarberRating, Style
 
 
 @app_views.route('/user/barber/', methods=['POST'])
