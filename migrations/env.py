@@ -6,9 +6,9 @@ from logging.config import fileConfig
 from flask import current_app
 
 from alembic import context
-from app.v1.models.user import *
-from app.v1.models.barber import *
-from app.v1.models.ops import *
+from models.user import *
+from models.barber import *
+from models.ops import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
