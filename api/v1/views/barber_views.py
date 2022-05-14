@@ -1,77 +1,212 @@
+from api.v1.app import db
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Comments
 from models.barber import Barber, BarberRating, Style
+from flask import jsonify, make_response, request, abort
 
 
 @app_views.route('/user/barber/', methods=['POST'])
 def create_barber():
-    pass
+    """ Creates a new barber.
 
+    Return: A dictionary representation on the instance of the new barber.
+    """
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        data = request.get_json()
+    else:
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+
+    compulsory_data = ['id', 'username', 'password', 'email', 'country','state',
+            'city', 'address']
+    for attr in compulsory_data:
+        if attr not in data:
+            return make_response(jsonify({'error': 'Missing ' + attr}), 400)
+
+    barber = Barber(**data)
+    db.session.add(barber)
+    db.session.commit()
+
+    return make_response(jsonify(barber.to_dict()), 201)
+    
 
 @app_views.route('/user/barber/activate/<id>', methods=['PUT'])
-def create_barber():
+def activate_barber():
     """
         This function activates a barber's account
     :return:
     """
-    pass
+    barber = Barber.query.filter_by(id=barber_id).first()
+    if barber is None:
+        abort(404)
+
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+
+    for k, v in request.get_json().items():
+        setattr(barber, k, v)
+
+    db.session.add(barber)
+    db.session.commit()
+    return jsonify(barber.to_dict())    
 
 
-@app_views.route('/user/barber/', methods=['GET'])
+@app_views.route('/user/barbers/', methods=['GET'])
 def get_barbers():
+    """Gets user information for all barbers."""
+    barbers = []
+    for barber in Barber.query.all():
+        barbers.append(barber.to_dict())
+
+    return jsonify(barbers)
+    
+
+
+@app_views.route('/user/barber/<barber_id>', methods=['GET'])
+def get_a_barber(barber_id):
+    """Gets a particular barber by it's id
+    Args:
+        barber_id (int): Unique id of a barber.
+    
+    Returns information of a barber.
     """
-        This function gets all barbers enrolled
+    barber = Barber.query.filter_by(id=barber_id).first()
+    if barber is None:
+        abort(404)
+    return jsonify(barber.to_dict())
+
+
+@app_views.route('/user/barber/<barber_id>', methods=['PUT'])
+def edit_barber(barber_id):
+    """Updates a barber.
+    Args:
+        barber_id (int): Unique id of a barber.
+    """
+    barber = Barber.query.filter_by(id=barber_id).first()
+    if barber is None:
+        abort(404)
+
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+
+    for k, v in request.get_json().items():
+        setattr(barber, k, v)
+
+    db.session.add(barber)
+    db.session.commit()
+    return jsonify(barber.to_dict())
+
+
+@app_views.route('/user/barber/<barber_id>', methods=['DELETE'])
+def delete_a_barber(barber_id):
+    """ Deletes a barber.
+    Args:
+        barber_id (int): Unique id of a barber.
+    """
+    barber = Barber.query.filter_by(id=barber_id).first()
+    if barber is None:
+        abort(404)
+
+    db.session.delete(barber)
+    db.session.commit()
+    del barber
+    return (jsonify({}))
+
+
+@app_views.route('/user/barbers/<string:location>', methods=['GET'])
+def get_barbers_by_location(location):
+    """ Returns all barbers that exactly or closely match the location
+    data passed in json.
+
     :return:
     """
     pass
 
+@app_views.route('/create_style', methods=['POST'])
+def create_new_style():
+    """Creates a new style.
 
-@app_views.route('/user/barber/<id>', methods=['GET'])
-def get_a_barber(id):
+    Return: Information on new style.
     """
-        This function get a particular user by it's id
-    :param id: unique id of a barber
-    :return:
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    
+    data = request.get_json()
+    if 'id' not in data:
+        return make_response(jsonify({'error': 'Missing id'}), 400)
+    if Style.query.filter_by(id=data['id']).first():
+        return make_response(jsonify({'error': 'Existing id'}), 400)
+    if 'name' not in data:
+        return make_respoonse(jsonify({'error': 'Missing name'}), 400)
+    if 'image' not in data:
+        return make_respoonse(jsonify({'error': 'Missing image URI'}), 400)
+    
+    style = Style(**data)
+    db.session.add(style)
+    db.session.commit()
+
+    style_info = {
+            'id': style.id,
+            'name': style.name,
+            'image': style.image,
+            'description': style.description
+            }
+    return make_response(jsonify(style_info), 201)
+
+
+@app_views.route('/barber/<barber_id>/add_style', methods=['PUT'])
+def select_styles(barber_id):
+    """ Adds styles to a barbers list of styles.
+    
+    Args:
+        barber_id (int): Unique id for a barber.
+    
+    Return: List of barber's styles.
     """
-    pass
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    
+    data = request.get_json()
+    if 'id' not in data:
+        return make_response(jsonify({'error': 'Missing style id'}), 400)
+
+    barber = Barber.query.filter_by(id=barber_id).first()
+    style = Style.query.filter_by(id=data['id']).first()
+    if barber is None or style is None:
+        abort(404)
+
+    barber.styles.append(style)
+    db.session.add(barber)
+    db.session.commit()
+    return jsonify(barber.to_dict())
 
 
-@app_views.route('/user/barber/<id>', methods=['PUT'])
-def edit_barber(id):
-    pass
-
-
-@app_views.route('/user/barber/', methods=['DEL'])
-def delete_a_barber():
-    pass
-
-
-@app_views.route('/barbers', methods=['GET'])
-def get_barbers_by_location():
+@app_views.route('/barber/<barber_id>/remove_style', methods=['PUT'])
+def unselect_a_styles(barber_id):
+    """ Removes a style from the list of a barber's styles
+    
+    Args:
+        barber_id (int): Unique id for a barber.
+    
+    Return: List of barber's styles.
     """
-    the function will return all barbers that exactly or closely match the location
-    data passed in json
-    :return:
-    """
-    pass
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+
+    data = request.get_json()
+    if 'id' not in data:
+        return make_response(jsonify({'error': 'Missing style id'}), 400)
+
+    barber = Barber.query.filter_by(id=barber_id).first()
+    style = Style.query.filter_by(id=data['id']).first()
+    if barber is None or style is None:
+        abort(404)
+
+    barber.styles.remove(style)
+    db.session.add(barber)
+    db.session.commit()
+
+    return jsonify(barber.to_dict())
 
 
-@app_views.route('/barber/select-style', methods=['POST'])
-def select_styles():
-    """
-        The function will enable a barber to select the styles from a list of styles
-        by their id in a list. This styles will be saved in the database for this barber.
-    :return:
-    """
-    pass
-
-
-@app_views.route('/barber/unselect-style', methods=['POST'])
-def unselect_a_styles():
-    """
-        The function will enable a barber to unselect the styles from a list of styles
-        by their ids. This styles will be removed from the database for this barber.
-    :return:
-    """
-    pass
