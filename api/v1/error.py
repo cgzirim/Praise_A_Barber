@@ -1,4 +1,4 @@
-from app.v1.app import app
+from app import app
 
 
 @app.errorhandler(404)
