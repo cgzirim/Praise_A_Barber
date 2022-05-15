@@ -2,6 +2,8 @@ from . import app_views
 from models.user import User
 from models.ops import Comments
 from models.barber import Barber, BarberRating, Style
+from flask import request, make_response, jsonify, abort
+from api.v1.app import db
 
 
 @app_views.route('/barber/rate', methods=['POST'])
@@ -24,9 +26,9 @@ def add_styles():
     if Style.query.filter_by(id=data['id']).first():
         return make_response(jsonify({'error': 'Existing id'}), 400)
     if 'name' not in data:
-        return make_respoonse(jsonify({'error': 'Missing name'}), 400)
+        return make_response(jsonify({'error': 'Missing name'}), 400)
     if 'image' not in data:
-        return make_respoonse(jsonify({'error': 'Missing image URI'}), 400)
+        return make_response(jsonify({'error': 'Missing image URI'}), 400)
 
     style = Style(**data)
     db.session.add(style)
@@ -54,4 +56,4 @@ def remove_styles(style_id):
     db.session.delete(style)
     db.session.commit()
     del style
-    return (jsonify({}))
+    return jsonify({})
