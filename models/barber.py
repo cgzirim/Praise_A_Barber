@@ -2,9 +2,9 @@ from api.v1.app import db
 from datetime import datetime
 
 barber_styles = db.Table('barber_styles',
-    db.Column('barber_id', db.String(100), db.ForeignKey('barber.id'), primary_key=True),
-    db.Column('style_id', db.Integer, db.ForeignKey('style.id'), primary_key=True)
-)
+                         db.Column('barber_id', db.String(100), db.ForeignKey('barber.id'), primary_key=True),
+                         db.Column('style_id', db.Integer, db.ForeignKey('style.id'), primary_key=True)
+                         )
 
 """
 john = Barber(id='xxx', username='john')
@@ -23,6 +23,7 @@ db.session.commit()
 
 """
 
+
 class Barber(db.Model):
     id = db.Column(db.String(100), nullable=False, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -39,19 +40,19 @@ class Barber(db.Model):
     availability = db.Column(db.Integer, default=0)
     job_count = db.Column(db.Integer, default=0)
     styles = db.relationship('Style', secondary=barber_styles, lazy='subquery',
-        backref=db.backref('barbers', lazy=True))
-    
+                             backref=db.backref('barbers', lazy=True))
+
     def to_dict(self):
         """Returns a dictionary containing a barber's information."""
         new_dict = self.__dict__.copy()
-        
+
         if 'password' in new_dict:
             new_dict.pop('password')
 
         if self.styles:
             styles = [style.name for style in self.styles]
             new_dict['styles'] = styles
-        
+
         new_dict.pop('_sa_instance_state')
 
         return new_dict
