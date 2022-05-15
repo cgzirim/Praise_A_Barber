@@ -1,4 +1,4 @@
-from api.v1.app import db
+from api.v1 import db
 from datetime import datetime
 
 barber_styles = db.Table('barber_styles',

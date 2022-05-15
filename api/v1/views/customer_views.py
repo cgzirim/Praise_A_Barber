@@ -1,6 +1,6 @@
 # from .v1 import app_views
 # from api.v1 import app_views
-from api.v1.app import db
+from api.v1 import db
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Comments

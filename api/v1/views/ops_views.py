@@ -3,7 +3,7 @@ from models.user import User
 from models.ops import Comments
 from models.barber import Barber, BarberRating, Style
 from flask import request, make_response, jsonify, abort
-from api.v1.app import db
+from api.v1 import db
 
 
 @app_views.route('/barber/rate', methods=['POST'])
