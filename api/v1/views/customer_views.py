@@ -1,6 +1,6 @@
 # from .v1 import app_views
 # from api.v1 import app_views
-from api.v1.app import db
+from api.v1 import db
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Comments
@@ -86,9 +86,8 @@ def edit_a_cust(cust_id):
     return jsonify(cust.to_dict())
 
 
-
 @app_views.route('/user/cust/<cust_id>', methods=['DELETE'])
-def delete_a_cust():
+def delete_a_cust(cust_id):
     """Deletes a customer.
     
     Args:
@@ -101,4 +100,4 @@ def delete_a_cust():
     db.session.delete(cust)
     db.session.commit()
     del cust
-    return (jsonify({}))
+    return jsonify({})

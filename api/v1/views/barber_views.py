@@ -1,4 +1,4 @@
-from api.v1.app import db
+from api.v1 import db
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Comments
@@ -18,8 +18,8 @@ def create_barber():
     else:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
 
-    compulsory_data = ['id', 'username', 'password', 'email', 'country','state',
-            'city', 'address']
+    compulsory_data = ['id', 'username', 'password', 'email', 'country', 'state',
+                       'city', 'address']
     for attr in compulsory_data:
         if attr not in data:
             return make_response(jsonify({'error': 'Missing ' + attr}), 400)
@@ -29,10 +29,10 @@ def create_barber():
     db.session.commit()
 
     return make_response(jsonify(barber.to_dict()), 201)
-    
 
-@app_views.route('/user/barber/activate/<id>', methods=['PUT'])
-def activate_barber():
+
+@app_views.route('/user/barber/activate/<barber_id>', methods=['PUT'])
+def activate_barber(barber_id):
     """
         This function activates a barber's account
     :return:
@@ -49,7 +49,7 @@ def activate_barber():
 
     db.session.add(barber)
     db.session.commit()
-    return jsonify(barber.to_dict())    
+    return jsonify(barber.to_dict())
 
 
 @app_views.route('/user/barbers/', methods=['GET'])
@@ -60,7 +60,6 @@ def get_barbers():
         barbers.append(barber.to_dict())
 
     return jsonify(barbers)
-    
 
 
 @app_views.route('/user/barber/<barber_id>', methods=['GET'])
@@ -111,7 +110,7 @@ def delete_a_barber(barber_id):
     db.session.delete(barber)
     db.session.commit()
     del barber
-    return (jsonify({}))
+    return jsonify({})
 
 
 @app_views.route('/user/barbers/<string:location>', methods=['GET'])
@@ -123,6 +122,7 @@ def get_barbers_by_location(location):
     """
     pass
 
+
 @app_views.route('/create_style', methods=['POST'])
 def create_new_style():
     """Creates a new style.
@@ -131,27 +131,27 @@ def create_new_style():
     """
     if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    
+
     data = request.get_json()
     if 'id' not in data:
         return make_response(jsonify({'error': 'Missing id'}), 400)
     if Style.query.filter_by(id=data['id']).first():
         return make_response(jsonify({'error': 'Existing id'}), 400)
     if 'name' not in data:
-        return make_respoonse(jsonify({'error': 'Missing name'}), 400)
+        return make_response(jsonify({'error': 'Missing name'}), 400)
     if 'image' not in data:
-        return make_respoonse(jsonify({'error': 'Missing image URI'}), 400)
-    
+        return make_response(jsonify({'error': 'Missing image URI'}), 400)
+
     style = Style(**data)
     db.session.add(style)
     db.session.commit()
 
     style_info = {
-            'id': style.id,
-            'name': style.name,
-            'image': style.image,
-            'description': style.description
-            }
+        'id': style.id,
+        'name': style.name,
+        'image': style.image,
+        'description': style.description
+    }
     return make_response(jsonify(style_info), 201)
 
 
@@ -166,7 +166,7 @@ def select_styles(barber_id):
     """
     if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    
+
     data = request.get_json()
     if 'id' not in data:
         return make_response(jsonify({'error': 'Missing style id'}), 400)
@@ -208,5 +208,3 @@ def unselect_a_styles(barber_id):
     db.session.commit()
 
     return jsonify(barber.to_dict())
-
-
