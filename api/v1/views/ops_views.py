@@ -43,12 +43,9 @@ def add_styles():
     return make_response(jsonify(style_info), 201)
 
 
-@app_views.route('/style/<style_id>/remove', methods=['DELETE'])
+@app_views.route('/style/remove/<style_id>', methods=['DELETE'])
 def remove_styles(style_id):
-    """
-        This function will enable an admin remove styles from the database
-    :return:
-    """
+    """Removes a hairstyle."""
     style = Style.query.filter_by(id=style_id).first()
     if style is None:
         abort(404)
