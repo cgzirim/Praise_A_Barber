@@ -120,8 +120,8 @@ def update_barber(barber_id):
     return jsonify(barber.to_dict())
 
 
-@app_views.route('/barber/<barber_id>/add_style', methods=['PUT'])
-def select_styles(barber_id):
+@app_views.route('user/barber/<barber_id>/add_style/style_id', methods=['PUT'])
+def select_styles(barber_id, style_id):
     """ Adds styles to a barbers list of styles.
     
     Args:
@@ -132,12 +132,12 @@ def select_styles(barber_id):
     if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
 
-    data = request.get_json()
-    if 'id' not in data:
-        return make_response(jsonify({'error': 'Missing style id'}), 400)
+    # data = request.get_json()
+    # if 'id' not in data:
+    #     return make_response(jsonify({'error': 'Missing style id'}), 400)
 
     barber = Barber.query.filter_by(id=barber_id).first()
-    style = Style.query.filter_by(id=data['id']).first()
+    style = Style.query.filter_by(id=style_id).first()
     if barber is None or style is None:
         abort(404)
 
@@ -147,8 +147,8 @@ def select_styles(barber_id):
     return jsonify(barber.to_dict())
 
 
-@app_views.route('/barber/<barber_id>/remove_style', methods=['PUT'])
-def unselect_a_styles(barber_id):
+@app_views.route('user/barber/<barber_id>/remove_style/<style_id>', methods=['PUT'])
+def unselect_a_styles(barber_id, style_id):
     """ Removes a style from the list of a barber's styles
     
     Args:
@@ -159,12 +159,12 @@ def unselect_a_styles(barber_id):
     if not request.get_json():
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
 
-    data = request.get_json()
-    if 'id' not in data:
-        return make_response(jsonify({'error': 'Missing style id'}), 400)
+    # data = request.get_json()
+    # if 'id' not in data:
+    #     return make_response(jsonify({'error': 'Missing style id'}), 400)
 
     barber = Barber.query.filter_by(id=barber_id).first()
-    style = Style.query.filter_by(id=data['id']).first()
+    style = Style.query.filter_by(id=style_id).first()
     if barber is None or style is None:
         abort(404)
 
