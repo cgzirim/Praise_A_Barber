@@ -38,7 +38,7 @@ def create_a_cust():
 
 
 # Get all customers
-@app_views.route('/user/customers/', methods=['GET'])
+@app_views.route('/user/custs/', methods=['GET'])
 def get_custs():
     """Gets all customers."""
     custs = []
