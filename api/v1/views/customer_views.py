@@ -16,7 +16,7 @@ def index():
     """
     return 'Hello Africa!'
 
-
+# Create a customer
 @app_views.route('/user/cust/', methods=['POST'])
 def create_a_cust():
     """Creates a new customer."""
@@ -37,7 +37,8 @@ def create_a_cust():
     return make_response(jsonify(cust.to_dict()), 201)
 
 
-@app_views.route('/user/customers/', methods=['GET'])
+# Get all customers
+@app_views.route('/user/custs/', methods=['GET'])
 def get_custs():
     """Gets all customers."""
     custs = []
@@ -47,6 +48,7 @@ def get_custs():
     return jsonify(custs)
 
 
+# Get a customer
 @app_views.route('/user/cust/<cust_id>', methods=['GET'])
 def get_a_cust(cust_id):
     """Get a customer.
@@ -62,6 +64,7 @@ def get_a_cust(cust_id):
     return jsonify(cust.to_dict())
 
 
+# Update a customer
 @app_views.route('/user/cust/<cust_id>', methods=['PUT'])
 def edit_a_cust(cust_id):
     """Updates a customer.
@@ -86,6 +89,7 @@ def edit_a_cust(cust_id):
     return jsonify(cust.to_dict())
 
 
+# Delete a customer.
 @app_views.route('/user/cust/<cust_id>', methods=['DELETE'])
 def delete_a_cust(cust_id):
     """Deletes a customer.

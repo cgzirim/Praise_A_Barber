@@ -1,0 +1,512 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "Portfolio project",
+      "version": "1.0.0",
+      "title": "Praise A Barber API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    
+    "tags": [
+        {
+          "name": "Products API",
+          "description": "Test API"
+        }
+      ],
+
+      "servers": [
+        {
+        "url": "/"
+        }
+    ],
+
+    "components": {
+        "schemas": {
+            "Barber": {
+                "type": "object",
+                "properties": {
+                    "firstname": {
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "type": "string"
+                        },
+                    "password": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "integer"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "availability": {
+                        "type": "string"
+                    },
+                    "job_count": {
+                        "type": "integer"
+                    },
+                    "styles": {
+                        "type": "list"
+                    }
+                }
+            },
+
+            "Style":{
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "description" : {
+                        "type" : "string"
+                    },
+                    "image" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            
+            "Id":{
+                "type" : "integer",
+                "properties" : {
+                    "name" : {
+                        "type" : "integer"
+                    }
+                }
+            },
+
+            "User": {
+                "type": "object",
+                "properties": {
+                    "firstname": {
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "type": "string"
+                        },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "usage_count": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    },
+
+    "paths": {
+        "api/v1/user/barber": {
+            "post": {
+                "tags": [
+                    "Create a barber"
+                ],
+                "summary": "Creates a new barber",
+                "requestBody": {
+                "description": "Post barber info to the Database",
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                        "$ref": "#/components/schemas/Barber"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                        "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "api/v1/user/activate/{barber_id}": {
+            "put" :{
+                "tags": ["Activate a barber"],
+                "summary": "Activates a barber",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber to activate",
+                    "required": true,
+                    "type": "integer",
+                    "schema" : {
+                        "$ref": "#/components/schemas/Id"
+                    }
+                }],
+                
+                "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                    "$ref": "#/components/schemas/Barber"
+                    }
+                },
+                "404": {
+                    "description": "NOT FOUND",
+                    "schema": {
+                    "$ref": "#/components/schemas/Barber"
+                    }
+                }
+            }
+        }
+        
+        },
+
+        "api/v1/user/barbers": {
+            "get": {
+                "tags": ["Get all barbers"],
+                "summary": "Gets all barbers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+
+        "api/v1/user/barbers/{location}": {
+            "get": {
+                "tags": ["Get all barbers by location"],
+                "summary": "Gets all barbers in a location",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/barber/{barber_id}": {
+            "get": {
+                "tags": ["Get a barber"],
+                "summary": "Gets a barber",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber to get",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"}
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {"$ref": "#/components/schemas/Barber"}
+                    }
+                    }
+                },
+
+            "put": {
+                "tags": ["Update a barber"],
+                "summary": "Updates a barber",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber to update",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"}
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                }
+            },
+
+            "delete": {
+                "tags": ["Delete a barber"],
+                "summary": "Deletes a barber",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber to delete",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"}
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/barber/{barber_id}/reviews": {
+            "get": {
+                "tags": ["Get a barber's reviews"],
+                "summary": "Gets all reviews a barber has",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/barber/{barber_id}/add_style/{style_id}": {
+            "put": {
+                "tags": ["Add style to a barber's list of styles"],
+                "summary": "Adds style to a barber's list of styles",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                },
+                {
+                    "name": "style_id",
+                    "in": "path",
+                    "description": "id of style to add",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }
+            ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/barber/{barber_id}/remove_style/{style_id}": {
+            "put": {
+                "tags": ["Remove style from a barber's list of styles"],
+                "summary": "Removes style from a barber's list of styles",
+                "parameters": [{
+                    "name": "barber_id",
+                    "in": "path",
+                    "description": "id of barber",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                },
+                {
+                    "name": "style_id",
+                    "in": "path",
+                    "description": "id of style to add",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }
+            ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/Barber"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/Barber"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/cust": {
+            "post": {
+                "tags": [
+                    "Create a customer"
+                ],
+                "summary": "Creates a new customer",
+                "requestBody": {
+                "description": "Post customer info to the Database",
+                "required": true,
+                "content": {
+                    "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/User"
+                        }
+                    }
+                }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                        "$ref": "#/components/schemas/User"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                        "$ref": "#/components/schemas/User"
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "api/v1/user/custs": {
+            "get": {
+                "tags": ["Get all customers"],
+                "summary": "Gets all customers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/User"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                    }
+                }
+            }
+        },
+
+        "api/v1/user/cust/{cust_id}": {
+            "get": {
+                "tags": ["Get a customer"],
+                "summary": "Gets a customer",
+                "parameters": [{
+                    "name": "cust_id",
+                    "in": "path",
+                    "description": "id of customer to get",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/User"},
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                    }
+                }
+            },
+    
+            "put": {
+                "tags": ["Update a customer"],
+                "summary": "Updates a customer",
+                "parameters": [{
+                    "name": "cust_id",
+                    "in": "path",
+                    "description": "id of customer to update",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/User"}
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {"$ref": "#/components/schemas/User"}
+                    }
+                }
+            },
+
+            "delete": {
+                "tags": ["Delete a customer"],
+                "summary": "Deletes a customer",
+                "parameters": [{
+                    "name": "cust_id",
+                    "in": "path",
+                    "description": "id of customer to delete",
+                    "required": true,
+                    "type": "integer",
+                    "schema": {"$ref": "#/components/schemas/Id"}
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {"$ref": "#/components/schemas/User"}
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {"$ref": "#/components/schemas/User"}
+                    }
+                }
+            }
+        }
+    }
+}
