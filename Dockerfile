@@ -9,7 +9,7 @@ RUN adduser -D joseph
 #setting the workdir to be the home of the new user
 WORKDIR /home/joseph
 
-RUN ls -lrt
+# RUN ls -lrt
 # copy requirements.txt from the project file to the home dir
 COPY requirements.txt ./requirements.txt
 
@@ -27,6 +27,7 @@ COPY api api
 COPY migrations migrations
 COPY models models
 COPY start.sh start.sh
+COPY Procfile Procfile
 
 # copy run.py and config.py and boot.sh to working dir
 # COPY migrations models start.sh ./
@@ -34,19 +35,24 @@ COPY start.sh start.sh
 # set permission of sh file
 RUN chmod +x start.sh
 
-# set the environment variable
-RUN pwd; ls -lrt
+# RUN pwd; ls -lrt
 
 ENV FLASK_APP api/v1/app.py
+ENV DB_URI $DB_URI
+
 # RUN flask db migrate
 # RUN flask db upgrade
 RUN chown -R joseph:joseph ./
 USER joseph
 
-# EXPOSE 5000
+EXPOSE 5000
 # ENTRYPOINT ["./start.sh"]
 
 RUN ./start.sh
 
-# CMD [ "flask", "run", "--host=0.0.0.0"]  # to run the application vanila flask
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "api.v1.app:app"]
+RUN echo $DB_URI
+# to run the application vanila flask
+# CMD [ "flask", "run", "--host=0.0.0.0"]
+
+# CMD ["gunicorn", "--bind", "0.0.0.0:40569", "api.v1.app:app"]
+CMD ["gunicorn", "api.v1.app:app"]
