@@ -1,0 +1,62 @@
+#----------------FLASK-----------------#
+# set FLASK_APP
+export FLASK_APP=api/v1/app.py
+
+# set SECRET_KEY
+export SECRET_KEY='xxxxxxxx'
+
+#--------------DATABASE-----------------#
+# set database connection string DB_URI, in this case a postgres database
+export DB_URI='postgresql://<username>:<password>@<host/IP address>/<database name>'
+
+# to initiate database if it has not been yet or you are changing DB engine
+flask db init
+
+# to migrate database to register changes
+flask db migrate
+
+# to update database table schema
+flask db update
+
+# ---- NOTE ------#
+In case a change is made to the database tables, it is compulsory to run below commands
+flask db migrate
+flask db update
+
+#---------------- DOCKER -----------------#
+
+# create docker image, where praisebarber is the same we chose, and we are instructing the command
+# to use the Dockerfile in the pwd
+sudo docker build -t praisebarber .
+
+# After the docker image has been create, in this case 'praisebarber,
+# now the container is created with this image, using the command below,
+# binding port 5000 of the container to port 8000 of the host running the container
+sudo docker run -p 8000:5000 -it praisebarber
+
+# view docker images
+sudo docker images
+
+# view docker running processes
+docker ps
+
+# view all docker processes, started or stopped
+docker ps -a
+
+
+# --------------- HEROKU------------------#
+
+# login to heroku
+heroku login
+
+# push container, heroku will use the docker file in the pwd to create the image and container
+sudo heroku container:push web -a praiseabarber
+
+# Release container (-a is used to specify the app)
+sudo heroku container:release web -a praiseabarber
+
+# NOTE ##
+it is important that there is a Procfile in the application root dir
+web: gunicorn --bind 0.0.0.0:${PORT} api.v1.app:app
+# the above is contained in the root dir. On your local machine, you can choose any port to run your container,
+# but on heroku, you have to use what they give, thus calling port from environment.
