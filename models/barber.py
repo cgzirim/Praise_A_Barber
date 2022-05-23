@@ -39,7 +39,7 @@ class Barber(db.Model):
     city = db.Column(db.String(100))
     address = db.Column(db.String(255))
     signup_date = db.Column(db.DateTime, default=datetime.utcnow())  # this should have a default value.
-    update_date = db.Column(db.DateTIme)
+    update_date = db.Column(db.DateTime)
     availability = db.Column(db.Integer, default=0)
     job_count = db.Column(db.Integer, default=0)
     styles = db.relationship('Style', secondary=barber_styles, lazy='subquery',
