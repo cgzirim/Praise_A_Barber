@@ -1,3 +1,4 @@
+from enum import unique
 from api.v1 import db
 from datetime import datetime
 
@@ -30,6 +31,7 @@ class Barber(db.Model):
     firstname = db.Column(db.String(80))
     lastname = db.Column(db.String(80))
     email = db.Column(db.String(80), unique=True)
+    phone = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(255))
     active = db.Column(db.Integer)
     country = db.Column(db.String(100))
