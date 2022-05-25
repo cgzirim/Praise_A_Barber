@@ -6,6 +6,7 @@ from models.user import User
 from models.ops import Comments
 from models.barber import Barber, BarberRating, Style
 from flask import jsonify, make_response, request, abort
+import uuid
 
 
 @app_views.route('/')
@@ -15,6 +16,7 @@ def index():
     :return:
     """
     return 'Hello Africa!'
+
 
 # Create a customer
 @app_views.route('/user/cust/', methods=['POST'])
@@ -30,6 +32,7 @@ def create_a_cust():
         if attr not in data:
             return make_response(jsonify({'error': 'Missing ' + attr}), 400)
 
+    data['id'] = uuid.uuid4()
     cust = User(**data)
     db.session.add(cust)
     db.session.commit()
