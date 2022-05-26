@@ -10,6 +10,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 # Instantiate flask app
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 CORS(app, resources={r"/*": {"origins": "http://0.0.0.0:*"}})
 
 # Set configs

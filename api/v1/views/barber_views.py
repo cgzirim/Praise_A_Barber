@@ -1,4 +1,4 @@
-from api.v1 import db, jwt, app
+from api.v1 import db, app
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Comments
@@ -8,6 +8,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import uuid
+import jwt
 
 
 def login_required(f):
@@ -23,7 +24,7 @@ def login_required(f):
 
         try:
             # decoding the payload to fetch the stored details
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = Barber.query.filter_by(id=data['id']).first()
 
         except Exception as e:
@@ -37,7 +38,41 @@ def login_required(f):
     return decorated
 
 
-@app.route('/login', methods=['POST'])
+@app_views.route('/json/login', methods=['POST'])
+def loginWithJson():
+    """
+        This is the login function, data will be collected with json
+    :return: jwt token
+    """
+    # creates dictionary of form data
+    auth = request.get_json()
+
+    if not auth or not auth.get('username') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return make_response(jsonify({'message': 'Could not verify'}), 401)
+
+    user = Barber.query.filter_by(username=auth.get('username')).first()
+
+    if not user:
+        # returns 401 if user does not exist
+        return make_response(jsonify({'message': 'User not found'}), 401)
+
+    print('passed user check')
+    if check_password_hash(user.password, auth.get('password')):
+        # generates the JWT Token
+        payload = {
+            'id': user.id,
+            'exp': datetime.utcnow() + timedelta(minutes=30)
+        }
+
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return make_response(jsonify({'token': token}), 201)
+    # returns 403 if password is wrong
+    return make_response(jsonify({'message': 'password incorrect'}), 403)
+
+
+@app_views.route('/login', methods=['POST'])
 def login():
     """
         This is the login function, data will be collected with form-data
@@ -59,20 +94,21 @@ def login():
     if not user:
         # returns 401 if user does not exist
         return make_response(
-            'Could not verify',
+            'user not found',
             401,
             {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
         )
-
+    print('passed user check')
     if check_password_hash(user.password, auth.get('password')):
         # generates the JWT Token
         payload = {
             'id': user.id,
             'exp': datetime.utcnow() + timedelta(minutes=30)
         }
-        token = jwt.encode(payload, app.config['SECRET_KEY'])
 
-        return make_response(jsonify({'token': token.decode('UTF-8')}), 201)
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return make_response(jsonify({'token': token}), 201)
     # returns 403 if password is wrong
     return make_response(
         'Could not verify',
@@ -81,9 +117,18 @@ def login():
     )
 
 
-@app_views('/logout')
+@app_views.route('/logout')
 def logout():
+    """ function to handle user logout by expiring session token"""
     pass
+
+
+@app_views.route('/dashboard')
+@login_required
+def dashboard(current_user):
+    """Dashboard view"""
+    print(current_user)
+    return jsonify({'message': 'You have access to the dashboard'}), 200
 
 
 # Create a barber
@@ -105,13 +150,13 @@ def create_barber():
         if attr not in data:
             return make_response(jsonify({'error': 'Missing ' + attr}), 400)
 
-    data['id'] = uuid.uuid4()
+    data['id'] = str(uuid.uuid4())
     data['password'] = generate_password_hash(data['password'])
     barber = Barber(**data)
     db.session.add(barber)
     db.session.commit()
-
-    return make_response(jsonify(barber.to_dict()), 201)
+    print(barber.to_dict())
+    return jsonify(barber.to_dict()), 201
 
 
 # Activate a barber
