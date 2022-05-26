@@ -1,7 +1,6 @@
 from api.v1 import db
 from datetime import datetime
 from models.ops import Review
-from api.utility.get_barber_reviews import get_barber_reviews
 
 barber_styles = db.Table(
     "barber_styles",
