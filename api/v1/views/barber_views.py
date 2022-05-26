@@ -1,11 +1,134 @@
-from api.v1 import db
+from api.v1 import db, app
 from api.v1.views import app_views
 from models.user import User
 from models.ops import Review
 from models.barber import Barber, BarberRating, Style
 from flask import jsonify, make_response, request, abort
-from sqlalchemy.exc import DataError
-from sqlalchemy.exc import IntegrityError
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
+import uuid
+import jwt
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        # jwt is passed in the request header
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+        # return 401 if token is not passed
+        if not token:
+            return jsonify({'message': 'You need to be logged in'}), 401
+
+        try:
+            # decoding the payload to fetch the stored details
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            current_user = Barber.query.filter_by(id=data['id']).first()
+
+        except Exception as e:
+            print(f'{e.__class__} - {str(e)} - {e}')
+            return jsonify({
+                'message': 'Login Invalid'
+            }), 401
+        # returns the current logged in users contex to the routes
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+
+@app_views.route('/json/login', methods=['POST'])
+def loginWithJson():
+    """
+        This is the login function, data will be collected with json
+    :return: jwt token
+    """
+    # creates dictionary of form data
+    auth = request.get_json()
+
+    if not auth or not auth.get('username') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return make_response(jsonify({'message': 'Could not verify'}), 401)
+
+    user = Barber.query.filter_by(username=auth.get('username')).first()
+
+    if not user:
+        # returns 401 if user does not exist
+        return make_response(jsonify({'message': 'User not found'}), 401)
+
+    print('passed user check')
+    if check_password_hash(user.password, auth.get('password')):
+        # generates the JWT Token
+        payload = {
+            'id': user.id,
+            'exp': datetime.utcnow() + timedelta(minutes=30)
+        }
+
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return make_response(jsonify({'token': token}), 201)
+    # returns 403 if password is wrong
+    return make_response(jsonify({'message': 'password incorrect'}), 403)
+
+
+@app_views.route('/login', methods=['POST'])
+def login():
+    """
+        This is the login function, data will be collected with form-data
+    :return: jwt token
+    """
+    # creates dictionary of form data
+    auth = request.form
+
+    if not auth or not auth.get('username') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return make_response(
+            'Could not verify',
+            401,
+            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
+        )
+
+    user = Barber.query.filter_by(username=auth.get('username')).first()
+
+    if not user:
+        # returns 401 if user does not exist
+        return make_response(
+            'user not found',
+            401,
+            {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
+        )
+    print('passed user check')
+    if check_password_hash(user.password, auth.get('password')):
+        # generates the JWT Token
+        payload = {
+            'id': user.id,
+            'exp': datetime.utcnow() + timedelta(minutes=30)
+        }
+
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return make_response(jsonify({'token': token}), 201)
+    # returns 403 if password is wrong
+    return make_response(
+        'Could not verify',
+        403,
+        {'WWW-Authenticate': 'Basic realm ="Wrong Password !!"'}
+    )
+
+
+@app_views.route('/logout')
+def logout():
+    """ function to handle user logout by expiring session token"""
+    pass
+
+
+@app_views.route('/dashboard')
+@login_required
+def dashboard(current_user):
+    """Dashboard view"""
+    print(current_user)
+    return jsonify({'message': 'You have access to the dashboard'}), 200
 
 
 # Create a barber
@@ -61,6 +184,9 @@ def create_barber():
                 else:
                     styles.append(style_obj)
             data["styles"] = styles
+
+    data['id'] = str(uuid.uuid4())
+    data['password'] = generate_password_hash(data['password'])
 
     try:
         barber = Barber(**data)
@@ -182,7 +308,8 @@ def get_barber_reviews(barber_id):
 
 
 # Update a barber
-@app_views.route("/user/barber/<barber_id>", methods=["PUT"])
+@login_required
+@app_views.route('/user/barber/<barber_id>', methods=['PUT'])
 def update_barber(barber_id):
     """Updates a barber.
     Args:
