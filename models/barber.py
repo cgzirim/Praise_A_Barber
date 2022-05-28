@@ -3,7 +3,7 @@
 from email.policy import default
 from api.v1 import db
 from datetime import datetime
-from api.utility.get_barber_reviews import get_barber_reviews
+from models.ops import Review
 
 
 # Define an associate table that associates IDs from
