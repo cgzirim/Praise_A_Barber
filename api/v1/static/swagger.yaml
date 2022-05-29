@@ -59,16 +59,12 @@ paths:
         - application/xml
         - application/json
       parameters:
-        - name: username
-          in: body
-          description: The barber name for login
+        - in: body
+          name: body
+          description: ''
           required: true
-          type: string
-        - name: password
-          in: body
-          description: The password for login in clear text
-          required: true
-          type: string
+          schema:
+            $ref: '#/definitions/Login'
       responses:
         '200':
           description: Successful
@@ -685,3 +681,11 @@ definitions:
         type: string
       active:
         type: integer
+
+  Login:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
