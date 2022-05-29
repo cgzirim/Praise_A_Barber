@@ -16,6 +16,7 @@ def login_required(f):
     def decorated(*args, **kwargs):
         token = None
         # jwt is passed in the request header
+        print(request.headers)
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
         # return 401 if token is not passed
@@ -38,7 +39,7 @@ def login_required(f):
     return decorated
 
 
-@app_views.route('/json/login', methods=['POST'])
+@app_views.route('/user/barber/login', methods=['POST'])
 def loginWithJson():
     """
         This is the login function, data will be collected with json
@@ -72,8 +73,8 @@ def loginWithJson():
     return make_response(jsonify({'message': 'password incorrect'}), 403)
 
 
-@app_views.route('/user/barber/login', methods=['POST'])
-def login():
+@app_views.route('/user/barber/form/login', methods=['POST'])
+def loginWithFormdata():
     """
         This is the login function, data will be collected with form-data
     :return: jwt token
@@ -117,7 +118,7 @@ def login():
     )
 
 
-@app_views.route('/logout')
+@app_views.route('/user/logout')
 def logout():
     """ function to handle user logout by expiring session token"""
     pass
@@ -316,7 +317,7 @@ def update_barber(username):
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for k, v in request.get_json().items():
-        if k is 'styles':
+        if k == 'styles':
             continue
         setattr(barber, k, v)
     setattr(barber, "updated_date", datetime.utcnow())
