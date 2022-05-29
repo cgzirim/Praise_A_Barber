@@ -6,6 +6,7 @@ from models.ops import Review
 from models.barber import Barber, BarberRating, Style
 from flask import request, make_response, jsonify, abort
 from api.v1 import db
+import uuid
 
 
 @app_views.route("/barber/rate", methods=["POST"])
@@ -13,9 +14,9 @@ def rate_a_barber():
     pass
 
 
-@app_views.route("/style/create", methods=["POST"])
-def add_styles():
-    """Creates a new style.
+@app_views.route("/user/hairstyle/", methods=["POST"])
+def create_styles():
+    """Creates a new hairstyle.
 
     Return: Information on new style.
     """
@@ -23,12 +24,13 @@ def add_styles():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     data = request.get_json()
-    if "id" not in data:
-        return make_response(jsonify({"error": "Missing id"}), 400)
-    if Style.query.filter_by(id=data["id"]).first():
-        return make_response(jsonify({"error": "Existing id"}), 400)
+    # data['id'] = str(uuid.uuid4())
+    data['id'] = 654
+
     if "name" not in data:
         return make_response(jsonify({"error": "Missing name"}), 400)
+    if Style.query.filter(Style.name.ilike(data['name'])).first():
+        return make_response(jsonify({"error": "Hairstyle exists"}), 400)
     if "image" not in data:
         return make_response(jsonify({"error": "Missing image URI"}), 400)
 
@@ -44,11 +46,45 @@ def add_styles():
     }
     return make_response(jsonify(style_info), 201)
 
+@app_views.route("/user/hairstyles/", methods=["GET"])
+def get_hairstyles():
+    """Gets all hairstyles."""
+    hairstyles = []
+    for hairstyle in Style.query.all():
+        hairstyles.append(hairstyle.to_dict())
 
-@app_views.route("/style/remove/<style_id>", methods=["DELETE"])
-def remove_styles(style_id):
+    return jsonify(hairstyles)
+
+
+@app_views.route("/user/hairstyle/<string:hairstyle_nm>", methods=["PUT"])
+def update_hairstyle(hairstyle_nm):
+    """Updates a hairstyle."""
+    content_type = request.headers.get("Content-Type")
+    if content_type == "application/json":
+        data = request.get_json()
+    else:
+        return make_response(jsonify({"error": "Not a JSON"}))
+
+    hairstyle = Style.query.filter(Style.name.ilike(hairstyle_nm)).first()
+    if hairstyle is None:
+        abort(404)
+
+    for k, v in data.items():
+        if k == 'id' or k == 'name':
+            continue
+        setattr(hairstyle, k, v)
+
+    setattr(hairstyle, "updated_date", datetime.utcnow())
+
+    db.session.add(hairstyle)
+    db.session.commit()
+    return jsonify(hairstyle.to_dict())
+
+
+@app_views.route("/user/hairstyle/<style_nm>", methods=["DELETE"])
+def remove_styles(style_nm):
     """Removes a hairstyle."""
-    style = Style.query.filter_by(id=style_id).first()
+    style = Style.query.filter(Style.name.ilike(style_nm)).first()
     if style is None:
         abort(404)
 
@@ -59,7 +95,6 @@ def remove_styles(style_id):
 
 
 # Endpoints for reviews:
-
 
 @app_views.route("/user/review/", methods=["POST"])
 def make_review():
