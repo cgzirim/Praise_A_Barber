@@ -13,7 +13,7 @@ barber_styles = db.Table(
     db.Column(
         "barber_id", db.String(100), db.ForeignKey("barber.id"), primary_key=True
     ),
-    db.Column("style_id", db.Integer, db.ForeignKey("style.id"), primary_key=True),
+    db.Column("style_id", db.String(80), db.ForeignKey("style.id"), primary_key=True),
 )
 
 
@@ -111,6 +111,7 @@ class BarberRating(db.Model):
 
 class Style(db.Model):
     id = db.Column(db.String(80), primary_key=True)
+    # ids = db.Column(db.String(80), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.Text)
     image = db.Column(db.String(100))
