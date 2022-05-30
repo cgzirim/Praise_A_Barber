@@ -24,8 +24,8 @@ def create_styles():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     data = request.get_json()
-    # data['id'] = str(uuid.uuid4())
-    data['id'] = 654
+    data['id'] = str(uuid.uuid4())
+    # data['id'] = 654
 
     if "name" not in data:
         return make_response(jsonify({"error": "Missing name"}), 400)
