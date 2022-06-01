@@ -272,195 +272,29 @@
 
     <div class="ltn__utilize-overlay"></div>
 
+    <!--Display by location AREA START-->
+    <div class="col-md-6 col-sm-6" style="margin-left: auto; margin-right: auto;">
+        <form>
+            <div class="input-group mb-3" id="srch">
+                <select name="states" id="srch_state" class="form-control" onchange="getCities();">
+                    <option value="" disabled selected>Select State</option>
+                    <option value="Abuja">Abuja</option>
+                    <option value="Lagos">Lagos</option>
+                    <option value="Rivers">Rivers</option>
+                    <option value="Kaduna">Kaduna</option>
+                </select>
+                <!-- A new select element with id=srch_city would be generated
+                anytime a state is selected from the select element above.
+                See the function getCities() in the file js/dynamic.js -->
+            </div>
+    </form>
+    </div>
+
+
     <!-- Barbers AREA START -->
-    <div class="ltn__product-area ltn__product-gutter pb-10">
-        <div class="container">
-            <div class="row justify-content-center">
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Mac Anthony</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/Trendy Haircut.webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user1.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Gwendolyne Omr</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/New Haircut.webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user2.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Jacob Mebza</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/Man Getting a Haircut.webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--  -->
-            </div>
-            <div class="row justify-content-center">
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Mac Evans</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/Getting a Haircut (2).webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user3.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Gwendolyne Omr</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/Getting a Haircut (1).webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ltn__product-item -->
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                    <div class="ltn__product-item ltn__product-item-3 text-center">
-                        <div>
-                            <div class="barber-photo">
-                                <span class="barber-img"><img src="img/product/user2.webp" alt=""></span>
-                                <span style="margin-left: 5px;">Jacob Mebza</span>
-                            </div>
-                        </div>
-                        <div class="product-img">
-                            <a href="#"><img src="img/product/Masked Barber.webp" alt="#"></a>
-                            <div class="product-hover-action">
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Likes"><i class="far fa-heart"> <sup>2</sup></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="barber-info">
-                            <div>
-                                <h2 class="product-title"><a href="#">Hairstyle</a></h2>
-                                <h2 class="product-title"><a href="#">Location</a></h2>
-                            </div>
-                            <div class="product-price">
-                                <a href="#" class="btn btn-success">Contact</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--  -->
-            </div>
+    <div class="ltn__product-area ltn__product-gutter pb-10" id="barber_posts">
+        <!-- JavaScript adds the content here -->
+        <!-- See the script dynamic.js -->
         </div>
     </div>
     <!-- Barbers AREA END -->
@@ -655,6 +489,8 @@
     <script src="js/plugins.js"></script>
     <!-- Main JS -->
     <script src="js/main.js"></script>
+    <!-- Make dynamic -->
+    <script src="js/dynamic.js"></script>
   
 </body>
 
