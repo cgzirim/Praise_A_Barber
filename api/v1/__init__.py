@@ -11,7 +11,8 @@ from flask_swagger_ui import get_swaggerui_blueprint
 # Instantiate flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-CORS(app, resources={r"/*": {"origins": "http://0.0.0.0:*"}})
+# CORS(app, resources={r"/*": {"origins": "http://0.0.0.0:*"}})
+CORS(app)
 
 # Set configs
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
