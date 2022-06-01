@@ -21,27 +21,6 @@ class Barber(db.Model):
     """Represents a Barber (table).
     
     Attributes:
-        id (flask_sqlalchemy String): The Barber id.
-        username (flask_sqlalchemy String): The unique username the Barber.
-        firstname (flask_sqlalchemy String): The first name of the Barber.
-        lastname (flask_sqlalchemy String): The last name of the Barber.
-        email (flask_sqlalchemy String): The unique email address of the Barber
-        phone (flask_sqlalchemy String): The unique phone number of the Barber.
-        password (flask_sqlalchemy String): The password of the Barber.
-        active (flask_sqlalchemy Integer): Defines if Barber is activated - 1,
-            or deactivated - 0.
-        country (flask_sqlalchemy String): The country of the Barber.
-        state (flask_sqlalchemy String): The state of the Barber.
-        city (flask_sqlalchemy String): The city of the Barber.
-        address (flask_sqlalchemy String): The address of the Barber.
-        signup_date (flask_sqlalchemy DateTime): The signup date of the Barber.
-        updated_date (flask_sqlalchemy DateTime): The date the Barber model was updated.
-        available (flask_sqlalchemy Boolean): Defines if the Barber is
-            available to render service.
-        job_count (flask_sqlalchemy Integer): The number of jobs the Barber has done.
-        styles (List): A list of Hairstyle objects.
-        reviews (List): A list of Review objects for the Barber.
-
     Example adding style to Barber list of styles:
         john = Barber(id='xxx', username='john')
         paul = Barber(id='xxx', username='paul')
@@ -76,6 +55,8 @@ class Barber(db.Model):
     updated_date = db.Column(db.DateTime, default=datetime.utcnow())
     available = db.Column(db.Boolean, default=0)
     job_count = db.Column(db.Integer, default=0)
+    profile_img_url = db.Column(db.String(1000))
+    display_img_url = db.Column(db.String(1000))
     styles = db.relationship(
         "Style",
         secondary=barber_styles,
