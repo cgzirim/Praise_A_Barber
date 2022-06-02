@@ -55,8 +55,8 @@ class Barber(db.Model):
     updated_date = db.Column(db.DateTime, default=datetime.utcnow())
     available = db.Column(db.Boolean, default=0)
     job_count = db.Column(db.Integer, default=0)
-    profile_img_url = db.Column(db.String(1000))
-    display_img_url = db.Column(db.String(1000))
+    profile_img_url = db.Column(db.String(256))
+    display_img_url = db.Column(db.String(256))
     styles = db.relationship(
         "Style",
         secondary=barber_styles,
