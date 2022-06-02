@@ -229,6 +229,7 @@ function getCities() {
         let state = dict[selectedState.value]
         let html = "";
 
+        // for city in state
         state.map((city) => {
             html += `<option value="${city}">${city}</option>`
         });
