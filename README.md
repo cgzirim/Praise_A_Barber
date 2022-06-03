@@ -26,14 +26,6 @@ For a more in-depth description of IdeaDog as well as an overview of its tech st
 - [Praiseabarber](https://medium.com/@donjoedbest/praiseabarber-29785ab71f89)
 -
 
-## Tech Stack :poodle:
-
-<p align="center">
-  <img src="https://github.com/bdbaraban/ideadog/blob/master/assets/ideadog-stack.png"
-       alt="IdeaDog Tech Stack"
-       width="600"
-  />
-</p>
 
 ### Dependencies :couple:
 
