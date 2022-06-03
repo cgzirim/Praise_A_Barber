@@ -11,13 +11,11 @@
 
 ## Description :bulb:
 
-Praiseabarber is a solution aimed at her
+Praiseabarber is a solution aimed...
 
-### Why statically-typed?
+### Why?
 
-Our kind of question.
 
-The front-end of IdeaDog is built in React, with TypeScript, while the back-end runs on Rust. In our book, TypeScript + Rust = The Ultimate Statically-Typed Web App!
 
 ## Medium Blog Posts :newspaper:
 
