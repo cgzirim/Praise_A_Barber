@@ -1,0 +1,222 @@
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+  }
+  :root {
+      --bkg-color: #15202b;
+      --wallpaper-color: #3e5366;
+    
+      --primary-color: white;
+      --secondary-text: #8898a6;
+    
+      --border-color: #38444d;
+    
+      --pfp-border: 4px;
+      
+      /* Color accents*/
+      --classic-blue: 29, 161, 241;
+      --avocado-green: 25, 191, 100;
+      --orange-sun: 000, 000, 00;
+      /* --- */
+      
+      --accent-color-rgb: var(--orange-sun);
+      --accent-color: rgb(var(--accent-color-rgb));
+    }
+  
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Ubuntu, "Helvetica Neue", sans-serif;
+    color:black;
+  /*   background-color:#15202b; */
+  }
+  .content {
+    width:80em;
+    margin: 3em auto;
+    border:1px solid #2F3336;
+  }
+  .navigation {
+    display:grid;
+    grid-template: auto auto / 4rem auto;
+    padding:.5em;
+  }
+  .arrow {
+    grid-row:1/3;
+    align-self:center;
+    margin-left:0.8em;
+    cursor:pointer;
+    position:relative;
+  }
+  .arrow > svg {
+    width: 2rem;
+  }
+  .arrow::after {
+    content:'';
+    position:absolute;
+    width:2.7em;
+    height:2.7em;
+    background-color:#B2BEB5;
+    top:-15%;
+    left:-7%;
+    border-radius:50%;
+    transition: opacity 0.3s;
+    opacity:0;
+  }
+  .arrow:hover::after {
+    opacity:0.2;
+  }
+  .header {
+    font-size:1.5em;
+    font-weight: 800;
+    color:black;
+  }
+  
+  .cover {
+    background-color:#3e5366;
+    height:16rem;
+  }
+  .cover img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+    .bio {
+      padding: 15px;
+      padding-bottom: 0px;
+    }
+    
+    .bio > div {
+      margin-bottom: 12px;
+      color: var(--primary-color);
+    }
+  .pre-bio {
+    display:flex;
+    justify-content:flex-end;
+    position:relative;
+    margin-bottom:1em;
+  }
+  
+  .barber-img img{
+   background-color: salmon;
+    width: calc(150px - 2 * 4px);
+    height: calc(150px - 2 * 4px);
+    position: absolute;
+    bottom: -0em;
+    left: 0em;
+    border-radius: 50%;
+    border: 4px solid #15202b;
+    background-image: url("");
+    background-size: cover;
+    cursor: pointer;
+  }
+  .barber-img img :hover::after{
+    content: "";
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    opacity:0.5;
+    background-color: var(--bkg-color);
+  }
+  
+    .edit-profile {
+      font-weight: 600;
+      border: 1px solid var(--accent-color);
+      color: black;
+      padding: 0.5em 1.2em;
+      border-radius: 2px;
+      cursor: pointer;
+      background-color: rgba(var(--accent-color-rgb), 0);
+      transition: background-color 0.2s;
+    }
+    
+    .edit-profile:hover {
+      background-color: rgba(var(--accent-color-rgb), 0.1);
+    }
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+      .secondary {
+      color: var(--secondary-text);
+    }
+  .ml-4 {
+    margin-left:2em;
+  }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4,25%);
+      align-items: stretch;
+      font-weight: 700;
+      font-size: 1em;
+      color: var(--secondary-text);
+    }
+  .tabs > div {
+    flex-grow:1;
+    text-align:center;
+    padding:1em;
+    position:relative;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: rgba(var(--accent-color-rbg), 0);
+  }
+    .tabs > div:hover {
+      color: var(--accent-color);
+      background-color: rgba(var(--accent-color-rgb), 0.1);
+    }
+    
+    .selected {
+      color: var(--accent-color);
+      border-bottom: 3px solid var(--accent-color);
+    }
+  
+  
+  
+  
+  
+  
+  *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  .cust-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      margin-top: 10px;
+      padding:0 15px;
+  }
+  
+  .gallary{
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+      grid-column-gap:15px;
+      grid-row-gap: 15px;
+  }
+  .gallary img{
+      width: 100%;
+      border-radius: 0px;
+  }
+  
+  .gallery-item {
+      position: relative;
+      flex: 1 0 22rem;
+      color: #fff;
+      cursor: pointer;
+  }
+  
+  .gallery-item:hover .gallery-item-info,
+  .gallery-item:focus .gallery-item-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .gallery-item-info {
+      display: none;
+  }

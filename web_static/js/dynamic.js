@@ -21,7 +21,7 @@ fetch('https://praiseabarber.herokuapp.com/api/v1/user/barbers/').then((data)=>{
                     </div>
                 </div>
                 <div class="product-img">
-                    <a href="#"><img src="{barber.display_img_url}" alt="#"></a>
+                    <a href="#"><img src="${barber.display_img_url}" alt="#"></a>
                     <div class="product-hover-action">
                         <ul>
                             <li>
@@ -229,6 +229,7 @@ function getCities() {
         let state = dict[selectedState.value]
         let html = "";
 
+        // for city in state
         state.map((city) => {
             html += `<option value="${city}">${city}</option>`
         });
