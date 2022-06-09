@@ -21,7 +21,7 @@ fetch('https://praiseabarber.herokuapp.com/api/v1/user/barbers/').then((data)=>{
                     </div>
                 </div>
                 <div class="product-img">
-                    <a href="#"><img src="{barber.display_img_url}" alt="#"></a>
+                    <a href="#"><img src="${barber.display_img_url}" alt="#"></a>
                     <div class="product-hover-action">
                         <ul>
                             <li>
