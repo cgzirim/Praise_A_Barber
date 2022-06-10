@@ -47,6 +47,7 @@ def loginWithJson():
     """
     # creates dictionary of form data
     auth = request.get_json()
+    print(auth)
 
     if not auth or not auth.get('username') or not auth.get('password'):
         # returns 401 if any email or / and password is missing
@@ -68,7 +69,11 @@ def loginWithJson():
 
         token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
 
-        return make_response(jsonify({'token': token}), 201)
+        return make_response(jsonify({
+            'status': 'ok',
+            'message': 'login successful',
+            'token': token
+            }), 201)
     # returns 403 if password is wrong
     return make_response(jsonify({'message': 'password incorrect'}), 403)
 
@@ -129,7 +134,15 @@ def logout():
 def dashboard(current_user):
     """Dashboard view"""
     print(current_user)
-    return jsonify({'message': 'You have access to the dashboard'}), 200
+    # barber = Barber.query.filter(Barber.username.ilike(username)).first()
+    # # print(barber.to_dict())
+    # if barber is None:
+    #     abort(404)
+
+    return jsonify({
+        'status': 'ok',
+        'user': current_user.to_dict()
+        }), 200
 
 
 # Create a barber
@@ -285,20 +298,23 @@ def get_a_barber(username):
 
     Returns information of a barber.
     """
-    filter = request.args.get("filter")
+    # filter = request.args.get("filter")
 
     barber = Barber.query.filter(Barber.username.ilike(username)).first()
+    # print(barber.to_dict())
     if barber is None:
         abort(404)
 
-    if filter == "data":
-        return jsonify(barber.to_dict())
-    if filter == "posts":
-        return jsonify("comming soon")
-    if filter == "reviews":
-        reviews = [review.to_dict() for review in barber.reviews]
-        print(reviews)
-        return jsonify(reviews)
+    # if filter == "data":
+    #     return jsonify(barber.to_dict())
+    # if filter == "posts":
+    #     return jsonify("comming soon")
+    # if filter == "reviews":
+    #     reviews = [review.to_dict() for review in barber.reviews]
+    #     print(reviews)
+    #     return jsonify(reviews)
+
+    return jsonify(barber.to_dict()), 200
 
 
 # Update a barber
