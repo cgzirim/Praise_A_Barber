@@ -20,15 +20,13 @@ Barbers are registered on the platform with confirmed location, and user enter t
   />
 </p>
 
-Our kind of question.
-
-The front-end of IdeaDog is built in React, with TypeScript, while the back-end runs on Rust. In our book, TypeScript + Rust = The Ultimate Statically-Typed Web App!
-
 ## Medium Blog Posts :newspaper:
 
-For a more in-depth description of IdeaDog as well as an overview of its tech stack and development process, we have written a series of articles on Medium. You can read them at the links below:
+For a more in-depth description of Praise A Barber as well as an overview of its tech stack and development process, we have written a series of articles on Medium. You can read them at the links below:
 
-- [Praiseabarber](https://medium.com/@donjoedbest/praiseabarber-29785ab71f89)
+- [Joseph's blog post](https://medium.com/@donjoedbest/praiseabarber-29785ab71f89)
+- [Chigozirim's blog post](https://medium.com/@iamokwukwe/praise-a-barber-and-warn-people-about-a-barber-26b0e9179cd3)
+
 
 ## Tech Stack :poodle:
 
