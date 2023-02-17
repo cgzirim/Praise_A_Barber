@@ -53,8 +53,6 @@ For a more in-depth description of Praise A Barber as well as an overview of its
 | [SQLAlchmey](https://www.arangodb.com/)  | ^3.4    |
 | [Postgres](https://www.arangodb.com/)  | ^3.4    |
 
-View the complete list of back-end dependencies in the corresponding [Cargo.toml](https://github.com/Ostoyae/ideaDog_server/blob/master/app/Cargo.toml).
-
 **Packaging/Deployment**:
 
 | Tool/Library                      | Version  |
